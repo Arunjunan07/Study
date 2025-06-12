@@ -1,0 +1,164 @@
+*{
+margin: 0;
+padding: 0; 
+font-family:sans-serif;
+}
+
+body {
+height:100%;
+background-color:#FCF8E8;
+}
+
+.navbar {
+padding: 20px 5%;
+display:flex; 
+justify-content:space-between; 
+align-items:center;
+z-index:999;
+background-color: #ECE5C7; 
+box-shadow: 0 0 14px rgba(0,0,0,0.3);
+}
+
+.navbar .logo h1 {
+color: #424144;
+border-bottom: 4px solid #fd65561;
+}
+
+.navbar .menu li{
+list-style:none; 
+display:inline-block;
+}
+
+.navbar .menu li a{
+display: block; 
+margin-left: 20px;
+color: #424144:
+border-bottom: 4px solid transparent;
+text-decoration: none;
+font-size: 20px; 
+font-weight: bold;
+}
+
+.navbar .menu li .active{
+border-bottom: 4px soild #f63е4e;
+}
+
+.navbar .menu li a:hover {
+border-bottom : 4px solid #f63e4e;
+}
+
+.content {
+background-image: url(shopping.jpg);
+background-size: cover;
+background-repeat: no-repeat ;
+padding:0 5%; 
+display: flex;
+flex-direction: column;
+justify-content:center;
+align-items:flex-start; 
+color: #424144;
+height: 120vh;
+}
+
+.content p{
+font-size: 20px; 
+margin-top: 20px; 
+}
+
+.content button {
+padding:15px 30px;
+margin-top: 30px;
+border: none;
+background: #f63e4e;
+Color: white;
+font-size: 20px;
+border-radius:5px;
+cursor: pointer;
+}
+
+.pheading {
+text-align: center;
+margin: 50px 0;
+color: #424144;
+}
+
+.sec{
+padding:10px 5%;
+}
+
+.products {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+}
+
+.products .card {
+width: 310px;
+background: #f5f5f5;
+box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+border-radius: 5px;
+padding: 5px;
+margin-bottom: 20px;
+}
+
+.products .card img {
+height: 250px;
+width: 100%;
+}
+
+.products .card .desc {
+padding: 5px 20px; 
+opacity: 0.8;
+}
+
+.products .card .title{
+font-weight: 900; 
+font size: 20px;
+color: #424144;
+padding:0 20px;
+}
+
+.products .card .box {
+display:flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px; 
+}
+
+.products .card .box .price {
+Color: #f63e4e;
+font-size: 20px; 
+font-weight: bold;
+}
+
+.products .card .box .btn{
+font-size: 13px:
+Color: #f63e4e;
+padding: 10px 18px;
+font-weight: 900;
+border: 1px solid #f63e4e;
+border-radius: 20px;
+}
+
+.products .card .box .btn:hover{
+cursor:pointer;
+background-color:#f63e4e;
+color:white;
+}
+
+
+
+footer{
+background-color: #f3f4f6;
+height:10vh;
+}
+
+footer p{
+text-align: center;
+line-height: 10vh;
+}
+
+footer p a {
+text-decoration: none; 
+Color: #f63e4e;
+font-weight:bold;
+}

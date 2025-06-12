@@ -1,0 +1,50 @@
+.u1 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+  background-color: #f1f1f1;
+  height:100%;
+  postion:fill;
+  overflow:auto;
+}
+
+.l1 a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.l1 a:hover {
+  background-color: #555;
+  color: white;
+}
+
+.u2 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  postion:fixed;
+  top:0;
+  width:100%;
+}
+.l2 {
+  float: left;
+}
+
+.l2 a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.l2 a:hover {
+  background-color:skyblue;
+}
+.active{
+  background-color:#04AA6D;

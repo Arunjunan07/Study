@@ -1,0 +1,111 @@
+<HTML><head>
+<title>
+Tutorialspoint
+</title>
+<link rel="stylesheet" href="tut.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script>
+
+function chk(){
+var a1 = document.radio.q1;
+for (var i=0; i<a1.length; i++) {
+if (a1[i].checked)
+break;
+}
+if (i==a1.length)
+ alert("Choose an option for Question:1");
+
+var a2 = document.radio.q2;
+for (var i=0; i<a2.length; i++) {
+if (a2[i].checked)
+break;
+}
+if (i==a2.length)
+ alert("Choose an option for Question:2");
+
+var a3 = document.radio.q3;
+for (var i=0; i<a3.length; i++) {
+if (a3[i].checked)
+break;
+}
+if (i==a3.length)
+ alert("Choose an option for Question:3");
+
+var a4 = document.radio.q4;
+for (var i=0; i<a4.length; i++) {
+if (a4[i].checked)
+break;
+}
+if (i==a4.length)
+ alert("Choose an option for Question:4");
+
+var a5 = document.radio.q5;
+for (var i=0; i<a5.length; i++) {
+if (a5[i].checked)
+break;
+}
+if (i==a5.length)
+ alert("Choose an option for Question:5");
+}
+
+</script>
+</head>
+<body>
+<form>
+
+<img src="https://www.tutorialspoint.com/images/logo.png">
+  <input type="text" class="search" placeholder="Search Tutorials" size=60px style="margin-left:50px;">
+  <button type="submit">Search</button>
+</form>
+<hr>
+<div class="nav">
+<div class= "hori">
+ <ul class="u2">
+    <li class="l2"><a href="home.asp">Home</a></li>
+    <li class="l2"><a href="about.asp">About</a></li>
+    <li class="l2"><a href="contact.asp">Contact</a></li>
+    <li class="l2"><a href="excercise.asp">Excercise</a></li>
+    <li class="l2" style="float:right"><a class="active" href="login.asp">Login</a></li>
+</ul></div>
+<div class="verti">
+ <ul class="u1">
+  <li class="l1"><a href="default.asp">Introduction</a></li>
+  <li class="l1"><a href="c.asp">Prgramming in C</a></li>
+  <li class="l1"><a href="html.asp">HTML</a></li>
+  <li class="l1"><a href="java.asp">Java</a></li>
+  <li class="l1"><a href="python.asp">Python</a></li>
+ </ul>
+ </div>
+ </div>
+ <div class="ques" style="margin-left:20%;padding:1px 16px;height:1000px;">
+ <form name="radio" onsubmit="chk()" method="post" action="http://localhost/21suca03/quiz.php">
+ <p> 1. Which of the following is NOT a method of the Thread class in Java? </p>
+ <input type="radio" name="q1" id="q1" value="a"> a. public void run() <br>
+ <input type="radio" name="q1" id="q1" value="b"> b. public void exit() <br>
+ <input type="radio" name="q1" id="q1" value="c"> c. public void start() <br>
+ <input type="radio" name="q1" id="q1" value="d"> d. public final int getPriority() <br>
+ <p> 2.Which of these is a mechanism for naming and visibility control of a class and its content? </p>
+ <input type="radio" name="q2" id="q2" value="a"> a. Objects <br>
+ <input type="radio" name="q2" id="q2" value="b"> b. Interfaces <br>
+ <input type="radio" name="q2" id="q2" value="c"> c. Packages <br>
+ <input type="radio" name="q2" id="q2" value="d"> d. Both a and b <br>
+ <p> 3.Which of the following packages is used to includes utility classes like Calendar, Collections, Date? </p>
+ <input type="radio" name="q3" id="q3" value="a"> a. java.lang <br>
+ <input type="radio" name="q3" id="q3" value="b"> b. java.util <br>
+ <input type="radio" name="q3" id="q3" value="c"> c. java.net <br>
+ <input type="radio" name="q3" id="q3" value="d"> d. java.awt <br>
+ <p> 4.Which of these access specifier(s) can be used for an interface? </p>
+ <input type="radio" name="q4"id="q4" value="a"> a. Public <br>
+ <input type="radio" name="q4"id="q4" value="b"> b. Protected <br>
+ <input type="radio" name="q4"id="q4" value="c"> c. Private <br>
+ <input type="radio" name="q4"id="q4" value="d"> d. Both b and c <br>
+ <p> 5.Which of this keyword can be used in a sub class to call the constructor of super class? </p>
+ <input type="radio" name="q5"id="q5" value="a"> a. super <br>
+ <input type="radio" name="q5"id="q5" value="b"> b. this <br> 
+ <input type="radio" name="q5"id="q5" value="c"> c. extent <br>
+ <input type="radio" name="q5"id="q5" value="d"> d. extends <br>
+ <br>
+ <input type="submit" class="btn">
+ </form>
+</body>
+</html>

@@ -1,0 +1,241 @@
+
+Type "help" for help.
+
+ \d
+              List of relations
+ Schema |     Name      | Type  |    Owner
+--------+---------------+-------+-------------
+ public | branch        | table | mcass232430
+ public | branch_course | table | mcass232430
+ public | course        | table | mcass232430
+ public | department    | table | mcass232430
+ public | employees      | table | mcass232430
+ public | enrolls       | table | mcass232430
+ public | pre_course    | table | mcass232430
+ public | student       | table | mcass232430
+ public | students      | table | mcass232430
+(9 rows)
+
+
+ select * from employees;
+ empid |  empname  |       desig        | esal  |  ecity
+-------+-----------+--------------------+-------+---------
+   101 | John Wick | Manager            | 30000 | Mumbai
+   102 | Nathan    | Manager            | 34000 | Chennai
+   103 | Shaw      | Clerk              | 24000 | Madurai
+   104 | Hobbs     | Developer          | 31000 | Kolkata
+   105 | Gandhi    | Associate Engineer | 19000 | Delhi
+(5 rows)
+
+
+ create view emp_view as
+ select empid,empname,desig from employees where esal>24000;
+CREATE VIEW
+ select * from emp_view
+ ;
+ empid |  empname  |   desig
+-------+-----------+-----------
+   101 | John Wick | Manager
+   102 | Nathan    | Manager
+   104 | Hobbs     | Developer
+(3 rows)
+
+ select empid,desig,sum(esal) from employees group by empid,desig;
+ empid |       desig        |  sum
+-------+--------------------+-------
+   103 | Clerk              | 24000
+   104 | Developer          | 31000
+   105 | Associate Engineer | 19000
+   101 | Manager            | 30000
+   102 | Manager            | 34000
+(5 rows)
+
+
+ update employees set esal=esal+1000;
+UPDATE 5
+ create view emp_view as
+ select empid,desig,sum(esal) from employees group by empid,desig;
+ERROR:  relation "emp_view" already exists
+ create view emp_view2 as
+ select empid,desig,sum(esal) from employees group by empid,desig;
+CREATE VIEW
+ select * from emp_view2;
+ empid |       desig        |  sum
+-------+--------------------+-------
+   103 | Clerk              | 25000
+   104 | Developer          | 32000
+   105 | Associate Engineer | 20000
+   101 | Manager            | 31000
+   102 | Manager            | 35000
+(5 rows)
+
+
+ update employees set esal=esal-1000;
+UPDATE 5
+ select * from emp_view2;
+ empid |       desig        |  sum
+-------+--------------------+-------
+   103 | Clerk              | 24000
+   104 | Developer          | 31000
+   105 | Associate Engineer | 19000
+   101 | Manager            | 30000
+   102 | Manager            | 34000
+(5 rows)
+
+
+ select * from emp_view,emp_view2;
+ empid |  empname  |   desig   | empid |       desig        |  sum
+-------+-----------+-----------+-------+--------------------+-------
+   101 | John Wick | Manager   |   103 | Clerk              | 24000
+   102 | Nathan    | Manager   |   103 | Clerk              | 24000
+   104 | Hobbs     | Developer |   103 | Clerk              | 24000
+   101 | John Wick | Manager   |   104 | Developer          | 31000
+   102 | Nathan    | Manager   |   104 | Developer          | 31000
+   104 | Hobbs     | Developer |   104 | Developer          | 31000
+   101 | John Wick | Manager   |   105 | Associate Engineer | 19000
+   102 | Nathan    | Manager   |   105 | Associate Engineer | 19000
+   104 | Hobbs     | Developer |   105 | Associate Engineer | 19000
+   101 | John Wick | Manager   |   101 | Manager            | 30000
+   102 | Nathan    | Manager   |   101 | Manager            | 30000
+   104 | Hobbs     | Developer |   101 | Manager            | 30000
+   101 | John Wick | Manager   |   102 | Manager            | 34000
+   102 | Nathan    | Manager   |   102 | Manager            | 34000
+   104 | Hobbs     | Developer |   102 | Manager            | 34000
+(15 rows)
+
+
+ CREATE TABLE COMPANY(
+    ID INT PRIMARY KEY NOT NULL,
+    NAME VARCHAR(50) NOT NULL,
+    AGE INT NOT NULL,
+    ADDRESS CHAR(50),
+    SALARY REAL
+ );
+
+CREATE TABLE
+ CREATE TABLE AUDIT(
+    EMP_ID INT NOT NULL,
+    ENTRY_DATE TEXT NOT NULL
+ );
+
+
+ CREATE OR REPLACE FUNCTION auditlog() RETURNS TRIGGER AS
+ $$
+ BEGIN
+    INSERT INTO AUDIT(EMP_ID, ENTRY_DATE) VALUES (NEW.ID, current_timestamp);
+    RETURN NEW;
+ END;
+ $$ 
+LANGUAGE plpgsql;
+
+
+CREATE FUNCTION
+
+
+ CREATE TRIGGER example_trigger
+ AFTER INSERT ON COMPANY
+ FOR EACH ROW
+ EXECUTE FUNCTION auditlog();
+
+
+ INSERT INTO COMPANY (ID, NAME, AGE, ADDRESS, SALARY)
+ VALUES (1, 'Raju', 25, 'New-Delhi', 33000.00 );
+INSERT INTO COMPANY  (id, name, age, address, salary)
+VALUES
+    (2, 'Amit', 30, 'Mumbai', 40000),
+    (3, 'Priya', 28, 'Chennai', 35000),
+    (4, 'Deepak', 35, 'Kolkata', 45000),
+    (5, 'Sita', 32, 'Bangalore', 38000),
+    (6, 'Vikram', 40, 'Hyderabad', 42000);
+
+
+INSERT 0 1
+
+ SELECT * FROM COMPA;
+ id | name | age |                      address                       | salary
+----+------+-----+----------------------------------------------------+--------
+  1 | Raju |  25 | New-Delhi                                          |  33000
+(1 row)
+
+
+ SELECT * FROM audit;
+ emp_id |            entry_date
+--------+----------------------------------
+      1 | 2023-11-23 12:43:42.285788+05:30
+(1 row)
+
+
+CREATE OR REPLACE FUNCTION check_salary()
+  RETURNS TRIGGER
+  LANGUAGE PLPGSQL
+  AS
+$$
+BEGIN
+	IF (NEW.salary - OLD.salary) / OLD.salary >= 1 THEN
+		RAISE 'The salary increment cannot that high.';
+	END IF;
+	RETURN NEW;
+END;
+$$
+
+CREATE TRIGGER before_update_salary
+  BEFORE UPDATE
+  ON COMPANY
+  FOR EACH ROW
+  EXECUTE PROCEDURE check_salary();
+
+
+UPDATE COMPANY
+SET salary = 200000
+WHERE ID = 1;
+ERROR:  The salary increment cannot that high.
+CONTEXT:  PL/pgSQL function check_salary() line 4 at RAISE
+
+
+CREATE TRIGGER before_update_salary_trigger
+BEFORE UPDATE OF salary ON company
+FOR EACH ROW
+EXECUTE FUNCTION fn_before_update_salary();
+
+
+UPDATE company
+SET salary = salary * 0.9
+WHERE id = 1;
+ERROR:  New salary cannot be less than current salary
+CONTEXT:  PL/pgSQL function fn_before_update_salary() line 4 at RAISE
+
+
+CREATE TABLE employee_backup(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    salary NUMERIC(10, 2) NOT NULL,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE OR REPLACE FUNCTION archive_deleted_employee()
+RETURNS TRIGGER
+AS
+$$
+BEGIN
+    INSERT INTO employee_backup(id, name, salary)
+    VALUES (OLD.id, OLD.name, OLD.salary);
+    RETURN OLD;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER after_delete_employee_trigger
+AFTER DELETE ON company
+FOR EACH ROW
+EXECUTE FUNCTION archive_deleted_employee();
+
+
+DELETE FROM company
+WHERE id = 6
+RETURNING *;
+
+ select * from employee_backup;
+ id |  name  |  salary  |         deleted_at
+----+--------+----------+----------------------------
+  6 | Vikram | 42000.00 | 2024-11-09 19:13:12.853388

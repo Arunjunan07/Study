@@ -1,0 +1,114 @@
+interface IUser {
+    name: string;
+    age: number;
+}
+  
+class Person implements IUser {
+    name: string;
+    age: number;
+  
+    constructor(name: string, age: number) {
+      this.name = name;
+      this.age = age;
+    }
+}
+  
+  class User extends Person {
+    constructor(name: string, age: number) {
+      super(name, age); 
+    }
+  
+  }
+  
+  const users: IUser[] = [];
+  
+  const userForm = document.getElementById('userForm') as HTMLFormElement;
+  const nameInput = document.getElementById('nameInput') as HTMLInputElement;
+  const ageInput = document.getElementById('ageInput') as HTMLInputElement;
+  const userTable = document.getElementById('userTable') as HTMLTableElement;
+  const tbody = userTable.querySelector('tbody') as HTMLTableSectionElement;
+  
+  userForm.addEventListener('submit', (e: Event) => {
+    e.preventDefault();
+  
+    const name = nameInput.value.trim();
+    const age = parseInt(ageInput.value.trim());
+  
+    if (name && !isNaN(age)) {
+      const user = new User(name, age);
+  
+      users.push(user); 
+  
+      renderTable();
+  
+      nameInput.value = '';
+      ageInput.value = '';
+      nameInput.focus();
+    }
+  });
+  
+  function renderTable() {
+    tbody.innerHTML = '';
+  
+    users.forEach((user, index) => {
+      const row = tbody.insertRow();
+  
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+      const cell4 = row.insertCell(3);
+  
+      cell1.textContent = (index + 1).toString();
+      cell2.textContent = user.name;
+      cell3.textContent = user.age.toString();
+  
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = () => deleteUser(index);
+  
+      cell4.appendChild(deleteButton);
+    });
+  }
+  
+  function deleteUser(index: number) {
+    users.splice(index, 1);
+    renderTable();
+  }
+  
+
+
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Table with Add & Delete</title>
+</head>
+<body>
+
+  <h1>Manage Users (with Add & Delete)</h1>
+
+  <form id="userForm">
+    <input type="text" id="nameInput" placeholder="Enter name" required />
+    <input type="number" id="ageInput" placeholder="Enter age" required />
+    <button type="submit">Add User</button>
+  </form>
+
+  <table id="userTable" border="1" style="width: 60%; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- User rows will appear here -->
+    </tbody>
+  </table>
+
+  <script src="dist/app.js"></script> <!-- Compiled JS -->
+</body>
+</html>

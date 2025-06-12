@@ -1,0 +1,137 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Graph_Node
+{
+    int data;
+    struct Graph_Node *next;
+} Node;
+
+int vertices;
+
+void readGraph(Node* ad[])
+{
+    Node *newNode;
+    int k, data;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        Node *last = NULL;
+        printf("\nEnter the Number of neighbours of %d  :", i);
+        scanf("%d", &k);
+
+        for (int j = 0; j < k; j++)
+        {
+            printf("Enter the value of %d neighbour of %d : ", j + 1, i);
+            scanf("%d", &data);
+
+            newNode = (Node*)malloc(sizeof(Node));
+            newNode->data = data;
+            newNode->next = NULL;
+            if (ad[i] == NULL)
+                ad[i] = newNode;
+            else
+                last->next = newNode;
+            last = newNode;
+        }
+    }
+}
+
+void printGraph(Node *ad[])
+{
+    Node *temp = NULL;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        temp = ad[i];
+        printf("\nThe neighbours of vertex %d are: ", i);
+        while (temp != NULL)
+        {
+            printf("%d \t", temp->data);
+            temp = temp->next;
+        }
+    }
+}
+
+void DFS(Node *ad[], int start, int visited[])
+{
+    visited[start] = 1;
+    printf("%d   ", start);
+    Node *temp;
+    temp = ad[start];
+    while (temp != NULL)
+    {
+        if (visited[temp->data] == 0)
+            DFS(ad, temp->data, visited);
+        temp = temp->next;
+    }
+}
+
+void BFS(Node *ad[], int start, int visited[])
+{
+    int queue[vertices];
+    int front = -1, rear = -1;
+
+    printf("BFS: ");
+    queue[++rear] = start;
+    visited[start] = 1;
+    front++;
+    while (front <= rear)
+    {
+        printf("%d   ", queue[front]);
+        Node *temp;
+        temp = ad[queue[front++]];
+        while (temp != NULL)
+        {
+            if (visited[temp->data] != 1)
+            {
+                queue[++rear] = temp->data;
+                visited[temp->data] = 1;
+            }
+            temp = temp->next;
+        }
+    }
+}
+
+int main()
+{
+    int start;
+
+    // Take the number of vertices as input
+    printf("Enter the total number of vertices: ");
+    scanf("%d", &vertices);
+
+    // Arrays to hold the adjacency list and visited nodes
+    int visited[vertices];
+    Node *adj[vertices];
+
+    // Initialize all adjacency list pointers to NULL
+    for (int i = 0; i < vertices; i++)
+    {
+        adj[i] = NULL;
+    }
+
+    // Read the graph
+    readGraph(adj);
+
+    // Print the graph structure
+    printGraph(adj);
+
+    // Ask for the starting vertex for DFS and BFS
+    printf("\nEnter the vertex from which to start DFS and BFS: ");
+    scanf("%d", &start);
+
+    // Perform DFS
+    printf("\nDFS starting from vertex %d: ", start);
+    for (int i = 0; i < vertices; i++)
+        visited[i] = 0;  // Reset visited array
+    DFS(adj, start, visited);
+
+    // Perform BFS
+    printf("\nBFS starting from vertex %d: ", start);
+    for (int i = 0; i < vertices; i++)
+        visited[i] = 0;  // Reset visited array
+    BFS(adj, start, visited);
+
+    return 0;
+}

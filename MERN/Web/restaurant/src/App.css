@@ -1,0 +1,121 @@
+/* src/style.css */
+.container {
+  display: flex;
+  justify-content: space-between; /* Ensures menu and cart are aligned side by side */
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.menu {
+  display: grid; /* Changed to grid to align items in rows and columns */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Grid with dynamic columns */
+  gap: 20px;
+  width: 70%; /* Take 70% width for menu items */
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
+}
+
+.card button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.card button:hover {
+  background-color: #0056b3;
+}
+
+.cart {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cart ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 1rem;
+}
+
+.cart button {
+  background-color: #ff3b30;
+  color: white;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart button:hover {
+  background-color: #e63946;
+}
+
+.cart p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.cart .button {
+  background-color: #4caf50;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart .button:hover {
+  background-color: #388e3c;
+}

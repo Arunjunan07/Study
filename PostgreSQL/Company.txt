@@ -1,0 +1,228 @@
+arun=# \c company
+
+CREATE TABLE
+
+
+create table employee(
+ eno int,name varchar(50),gender char(1),dob date,doj date,desig varchar(30),basic int,dept_no smallint,pan int,seno int,
+ primary key(eno),
+ check(gender in ('M','F')));
+ foreign key(seno) references employee(eno));
+
+create table department(
+ dept_no int,name varchar(50),meno smallint,noe smallint default 0,
+ primary key(dept_no));
+
+create table project (
+ proj_no int,name varchar(50),dept_no smallint,
+ primary key(proj_no),
+ foreign key(dept_no) references department(dept_no));
+
+create table worksfor(
+eno int,proj_no int,date_worked date,hours smallint,
+primary key(eno,proj_no,date_worked),
+foreign key(eno) references employee(eno),
+foreign key(proj_no) references project(proj_no));
+
+
+ALTER TABLE
+
+alter table employee add foreign key(seno) references employee(eno);
+alter table employee add foreign key(dept_no) references department(dept_no);
+
+
+select * from employee;
+ eno |     name      | gender |    dob     |    doj     |      desig      | basic | dept_no |    pan    | seno
+-----+---------------+--------+------------+------------+-----------------+-------+---------+-----------+------
+   1 | John      | M      | 1990-01-01 | 2020-01-01 | Manager         | 60000 |       1 | 123456789 |
+   2 | Jane     | F      | 1992-02-02 | 2021-02-02 | Developer       | 50000 |       2 | 987654321 |    1
+   3 | Emily  | F      | 1988-03-03 | 2019-03-03 | Sales Executive | 45000 |       3 | 456789123 |    1
+   5 | Jeevan        | M      | 1989-03-11 | 2019-05-13 | Supervisor      | 77000 |       2 | 923862863 |
+   6 | Eliza         | F      | 1994-03-30 | 2022-02-23 | Manager         | 56000 |       3 | 862346823 |
+   4 | Sanjay        | M      | 1992-03-19 | 2021-05-23 | Manager         | 74000 |       2 | 923879823 |    5
+
+
+
+
+select * from department;
+ dept_no |      name       | meno | noe
+---------+-----------------+------+-----
+       2 | Development     |    4 |   3
+       1 | Human Resources |    1 |   1
+       3 | Sales           |    6 |   2
+
+
+
+ select * from worksfor;
+ eno | proj_no | date_worked | hours
+-----+---------+-------------+-------
+   2 |       1 | 2023-01-10  |     8
+   3 |       2 | 2023-01-11  |     7
+
+
+
+select * from project;
+ proj_no |     name      | dept_no
+---------+---------------+---------
+       1 | Project Alpha |       2
+       2 | Project Beta  |       3
+
+
+
+ select * from employee where basic < (select AVG(basic) from employee);
+ eno |     name      | gender |    dob     |    doj     |      desig      | basic | dept_no |    pan    | seno
+-----+---------------+--------+------------+------------+-----------------+-------+---------+-----------+------
+   1 | John      | M      | 1990-01-01 | 2020-01-01 | Manager         | 60000 |       1 | 123456789 |
+   2 | Jane    | F      | 1992-02-02 | 2021-02-02 | Developer       | 50000 |       2 | 987654321 |    1
+   3 | Emily  | F      | 1988-03-03 | 2019-03-03 | Sales Executive | 45000 |       3 | 456789123 |    1
+   6 | Eliza         | F      | 1994-03-30 | 2022-02-23 | Manager         | 56000 |       3 | 862346823 |
+
+
+
+company=# select * from department where noe>6;
+ dept_no | name | meno | noe
+---------+------+------+-----
+
+
+
+
+
+company=# select * from employee;
+ eno |     name      | gender |    dob     |    doj     |      desig      | basic | dept_no |    pan    | seno
+-----+---------------+--------+------------+------------+-----------------+-------+---------+-----------+------
+   1 | John Doe      | M      | 1990-01-01 | 2020-01-01 | Manager         | 60000 |       1 | 123456789 |
+   2 | Jane Smith    | F      | 1992-02-02 | 2021-02-02 | Developer       | 50000 |       2 | 987654321 |    1
+   3 | Emily Johnson | F      | 1988-03-03 | 2019-03-03 | Sales Executive | 45000 |       3 | 456789123 |    1
+   5 | Jeevan        | M      | 1989-03-11 | 2019-05-13 | Supervisor      | 77000 |       2 | 923862863 |
+   6 | ELiza         | F      | 1994-03-30 | 2022-02-23 | Manager         | 56000 |       3 | 862346823 |
+   4 | Sanjay        | M      | 1992-03-19 | 2021-05-23 | Manager         | 74000 |       2 | 923879823 |    5
+(6 rows)
+
+
+company=# select desig,avg(basic) from employee group by desig;
+      desig      |        avg
+-----------------+--------------------
+ Manager         | 63333.333333333333
+ Supervisor      | 77000.000000000000
+ Sales Executive | 45000.000000000000
+ Developer       | 50000.000000000000
+(4 rows)
+
+
+company=# select desig,floor(avg(basic),2) from employee group by desig;
+ERROR:  function floor(numeric, integer) does not exist
+LINE 1: select desig,floor(avg(basic),2) from employee group by desi...
+                     ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+company=# select desig,round(avg(basic),2) from employee group by desig;
+      desig      |  round
+-----------------+----------
+ Manager         | 63333.33
+ Supervisor      | 77000.00
+ Sales Executive | 45000.00
+ Developer       | 50000.00
+(4 rows)
+
+
+company=# select desig,round(avg(basic),2) as Avg basic salary from employee group by desig;
+ERROR:  syntax error at or near "basic"
+LINE 1: select desig,round(avg(basic),2) as Avg basic salary from em...
+                                                ^
+company=# select desig,round(avg(basic),2) as Avgg_basic_salary from employee group by desig;
+      desig      | avgg_basic_salary
+-----------------+-------------------
+ Manager         |          63333.33
+ Supervisor      |          77000.00
+ Sales Executive |          45000.00
+ Developer       |          50000.00
+
+
+VIEW
+
+CREATE VIEW dep_details AS
+SELECT 
+    d.dept_no,
+    d.name,
+    d.noe,
+    (SELECT SUM(e.basic) 
+     FROM employee e 
+     WHERE e.dept_no = d.dept_no
+     GROUP BY e.dept_no) AS total_basic_salary
+FROM department d;
+
+ select * from dep_details;
+ dept_no |      name       | noe | total_basic
+---------+-----------------+-----+-------------
+       2 | Development     |   3 |      201000
+       1 | Human Resources |   1 |       60000
+       3 | Sales           |   2 |      101000
+
+
+TRIGGER
+
+CREATE OR REPLACE FUNCTION inc_noe()
+RETURNS trigger
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    UPDATE department
+    SET noe = noe + 1
+    WHERE dept_no = NEW.dept_no;
+    RETURN NEW;
+END;
+$$;
+
+create trigger inc_noe
+after insert on employee
+for each row
+execute function inc_noe();
+
+INSERT INTO employee (eno, name, gender, dob, doj, desig, basic, dept_no, pan, seno)
+VALUES (7, 'Mark Antony', 'M', '1993-06-15', '2023-09-01', 'Software Engineer', 65000, 2, '741258963', 1);
+
+select * from department;
+
+
+CREATE OR REPLACE FUNCTION dec_noe()
+RETURNS trigger
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    UPDATE department
+    SET noe = noe - 1
+    WHERE dept_no = OLD.dept_no;
+    RETURN NEW;
+END;
+$$;
+
+
+create trigger dec_noe
+after delete on employee
+for each row
+execute function dec_noe();
+
+
+
+CREATE OR REPLACE FUNCTION transfer_emp()
+RETURNS trigger
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    UPDATE department
+    SET noe = noe + 1
+    WHERE dept_no = NEW.dept_no;
+    UPDATE department
+    SET noe = noe - 1
+    WHERE dept_no = OLD.dept_no;
+    RETURN NEW;
+END;
+$$;
+
+
+create trigger update_noe
+after update on employee
+for each row
+execute function transfer_emp();

@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<script>
+
+function f1() 
+{
+
+var x = document.getElementById("fruit");
+var v=x.value;
+
+var p=document.getElementById("OP");
+
+if(v=="Chico")
+   p.innerHTML="Selcted Fruit:"+ v+" "+ "50";
+
+if(v=="Apple")
+   p.innerHTML="Selcted Fruit:"+ v+ "250";
+}
+
+</script>
+</head>
+
+<body>
+
+<p> <b>Select one of the favourite fruit </b> </p>
+
+<select id="fruit" onchange="f1()">
+<option value="Chico">CHICO
+<option value="Apple">APPLE
+<option value="Guava">Guava
+<option value="Pineapple">Pineapple
+<option value="Banana">Banana
+</select>
+
+<p id="OP"> Selcted Fruit: </p>
+
+</body>
+</html>

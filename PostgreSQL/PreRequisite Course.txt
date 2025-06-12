@@ -1,0 +1,170 @@
+
+CREATE TABLE
+
+CREATE TABLE STUDENT(
+ROLLNO INT PRIMARY KEY,NAME VARCHAR(50),
+DOB DATE,GENDER CHAR(1) CHECK(GENDER IN('M','F')),
+DOA DATE,BCODE INT);
+
+CREATE TABLE BRANCH(
+BCODE INT PRIMARY KEY ,BNAME VARCHAR(50), DNO INT);
+
+create table department(
+dno int primary key,dname varchar(30));
+
+create table course( 
+ccode int primary key, cname varchar(50),
+credits int, dno int, 
+constraint fk_dept foreign key(dno) references department(dno));
+
+create table branch_course( 
+bcode smallint, ccode smallint, semester smallint, 
+primary key(bcode,ccode),
+foreign key(bcode) references branch(bcode), 
+foreign key(ccode) references course(ccode));
+
+create table pre_course( 
+ccode smallint, pccode smallint, 
+primary key(ccode,pccode), 
+foreign key(ccode) references course(ccode));
+
+create table enrolls(
+rollno int, ccode smallint, sess varchar(25),
+grade char(2) check(grade in('S','A','B','C','D','E','U')), 
+primary key(rollno,ccode,sess),
+foreign key(rollno) references student(rollno),
+foreign key(ccode) references course(ccode));
+
+
+ALTER TABLE
+
+alter table student add foreign key(bcode) references branch(bcode);
+alter table branch add foreign key(dno) references department(dno);
+
+
+ INSERT INTO department (dno, dname) VALUES
+ (901, 'Computer Science'),
+ (902, 'Mathematics'),
+ (903, 'Physics'),
+ (904, 'Chemistry'),
+ (905, 'Electrical Engineering'),
+ (906, 'Mechanical Engineering');
+
+ INSERT INTO branch (bcode, bname, dno) VALUES
+ (101, 'MCA', 901),
+ (102, 'Maths', 902),
+ (103, 'Engineering Physics', 903),
+ (104, 'Organic Chemistry', 904),
+ (105, 'Electrical Engineering', 905),
+ (106, 'Mechanical Engineering', 906);
+
+INSERT INTO course (ccode, cname, credits, dno) VALUES
+ (201, 'Introduction to Programming', 3, 901),
+ (202, 'Data Structures', 4, 901),
+ (203, 'Calculus I', 3, 902),
+ (204, 'Linear Algebra', 3, 902),
+ (205, 'Classical Mechanics', 4, 903),
+ (206, 'Quantum Chemistry', 4, 904);
+
+ INSERT INTO branch_course (bcode, ccode, semester) VALUES
+ (101, 201, 1),
+ (101, 202, 2),
+ (102, 203, 1),
+ (102, 204, 2),
+ (103, 205, 1),
+ (104, 206, 1);
+
+ INSERT INTO pre_course (ccode, pccode) VALUES
+ (202, 201), (204, 203), (205, 201);
+
+ INSERT INTO student (rollno, name, dob, gender, doa, bcode) VALUES
+ (1001, 'Arun', '1993-03-15', 'F', '2010-08-01', 101),
+ (1002, 'Hamen', '1992-11-23', 'M', '2010-08-01', 102),
+ (1003, 'Vini', '1993-07-09', 'M', '2011-08-01', 103),
+ (1004, 'Ani', '1992-05-21', 'F', '2011-08-01', 104),
+ (1005, 'John', '1994-01-12', 'F', '2011-08-01', 105),
+ (1006, 'Mary', '1993-08-05', 'M', '2011-08-01', 106);
+
+ INSERT INTO enrolls (rollno, ccode, sess, grade) VALUES
+ (1001, 201, 'APRIL2011', 'A'),
+ (1001, 202, 'NOVEMBER2011', 'B'),
+ (1002, 203, 'APRIL2011', 'B'),
+ (1002, 204, 'NOVEMBER2011', 'A'),
+ (1003, 205, 'APRIL2011', 'S'),
+ (1004, 206, 'APRIL2011', 'A');
+
+
+select * from student;
+ rollno | name  |    dob     | gender |    doa     | bcode
+--------+-------+------------+--------+------------+-------
+   1001 | Arun  | 1993-03-15 | F      | 2010-08-01 |   101
+   1002 | Hamen | 1992-11-23 | M      | 2010-08-01 |   102
+   1003 | Vini  | 1993-07-09 | M      | 2011-08-01 |   103
+   1004 | Ani   | 1992-05-21 | F      | 2011-08-01 |   104
+   1005 | John  | 1994-01-12 | F      | 2011-08-01 |   105
+   1006 | Mary  | 1993-08-05 | M      | 2011-08-01 |   106
+
+
+select * from branch;
+ bcode |         bname          | dno
+-------+------------------------+-----
+   101 | MCA                    | 901
+   102 | Maths                  | 902
+   103 | Engineering Physics    | 903
+   104 | Organic Chemistry      | 904
+   105 | Electrical Engineering | 905
+   106 | Mechanical Engineering | 906
+
+
+select * from department;
+ dno |         dname
+-----+------------------------
+ 901 | Computer Science
+ 902 | Mathematics
+ 903 | Physics
+ 904 | Chemistry
+ 905 | Electrical Engineering
+ 906 | Mechanical Engineering
+
+
+select * from course;
+ ccode |            cname            | credits | dno
+-------+-----------------------------+---------+-----
+   201 | Introduction to Programming |       3 | 901
+   202 | Data Structures             |       4 | 901
+   203 | Calculus I                  |       3 | 902
+   204 | Linear Algebra              |       3 | 902
+   205 | Classical Mechanics         |       4 | 903
+   206 | Quantum Chemistry           |       4 | 904
+
+
+select * from branch_course;
+ bcode | ccode | semester
+-------+-------+----------
+   101 |   201 |        1
+   101 |   202 |        2
+   102 |   203 |        1
+   102 |   204 |        2
+   103 |   205 |        1
+   104 |   206 |        1
+
+
+select * from pre_course;
+ ccode | pccode
+-------+--------
+   202 |    201
+   204 |    203
+   205 |    201
+
+
+select * from enrolls;
+ rollno | ccode |     sess     | grade
+--------+-------+--------------+-------
+   1001 |   201 | APRIL2011    | A
+   1001 |   202 | NOVEMBER2011 | B
+   1002 |   203 | APRIL2011    | B
+   1002 |   204 | NOVEMBER2011 | A
+   1003 |   205 | APRIL2011    | S
+   1004 |   206 | APRIL2011    | A
+
+

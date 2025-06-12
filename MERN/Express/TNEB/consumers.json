@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "Raj Kumar",
+    "serviceNumber": "TNEB123456",
+    "address": "Chennai",
+    "contactNumber": "9874564310",
+    "connectionType": "Domestic",
+    "bills": [
+      {
+        "billId": 1,
+        "month": "March 2025",
+        "unitsConsumed": 350,
+        "amount": 1890
+      },
+      {
+        "billId": 2,
+        "month": "April 2025",
+        "unitsConsumed": 400,
+        "amount": 2200
+      }
+    ]
+  }
+]

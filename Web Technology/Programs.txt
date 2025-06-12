@@ -1,0 +1,141 @@
+------------------- Menu bar ---------------------
+.u2 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position:fill;
+  top:0;
+  width:100%;
+}
+.l2 {
+  float: left;
+}
+
+.l2 a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.l2 a:hover {
+  background-color:skyblue;
+}
+-------------------- Show Password -----------------
+<script>
+function showpass() {
+  var x = document.getElementById("pass");
+  /*if (x.type == "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }*/
+x.type = (x.type=="password") ? "text" : "password"
+}
+</script>
+
+--------------------- UpperCase ---------------------
+<script>
+function upper() {
+  var x=document.etElementById("t1")
+  x.value=x.value.toUpperCase();
+}
+</script>
+
+-------------------- Validation -----------------------
+<script>  
+function validateform(){  
+var name=document.getElementById("name").value;  
+var password=document.getElementById("password").value;  
+  
+if (name==null || name==""){  
+  alert("Name can't be blank");  
+  return false;  
+}else if(password.length<6){  
+  alert("Password must be at least 6 characters long.");  
+  return false;  
+  }
+if ( ( form.gender[0].checked == false ) && ( form.gender[1].checked == false ) )
+{
+alert ( "Please choose your Gender: Male or Female" );
+return false;
+}  
+}  
+</script>
+
+--------------------- Quiz --------------------------
+function chk(){
+var a1 = document.radio.q1;
+for (var i=0; i<a1.length; i++) {
+if (a1[i].checked)
+break;
+}
+if (i==a1.length)
+ alert("Choose an option for Question:1");
+
+-------------------- PHP -----------------------------
+$a=$_POST['t1'];
+$n=intval($a);
+echo "<table border=2>";
+echo "<th> NUMBER <th> CUBE";
+
+for($i=1; $i<=$n;$i++)
+{
+echo "<tr><td>". $i;
+echo "<td>". $i*$i*$i;
+}
+
+===============================
+
+function display($number) {
+if($number<=5){
+echo "$number <br/>";
+display($number+1);
+}
+}
+
+display(1);
+
+================================
+
+$q1=$_POST['qs1'];
+$q2=$_POST['qs2'];
+$q3=$_POST['qs3'];
+$sc=0;
+if($q1=="a")
+$sc=$sc+10;
+if($q2=="b")
+$sc=$sc+10;
+if($q3=="c")
+$sc=$sc+10;
+
+echo "<br> <h1> <u> <i>your score=". $sc;
+
+================================
+
+$ar1 = array("color" => "red", 2, 4);
+$ar2 = array("a", "b", "color" => "green", "shape" => "trapezoid", 4);
+print_r($ar1);
+
+================================
+
+------------------------ MySQL -----------------------
+
+$q='insert into items values('.$a.','.'"'.$b.'"'.','.$c.','.$d.')';
+$q='delete from items where item_No='.$a;
+mysqli_query($conn,$q);
+$vv=mysqli_affected_rows($conn);
+
+$r='select * from items where price='.$w;
+$v=mysqli_query($conn,$r);
+$z=mysqli_num_rows($v);
+while($row=mysqli_fetch_array($v))
+	{
+        	echo'<tr><td>'.$row[0].'<td>'.$row[1].'<td>'.$row[2].'<td>'.$row[3].'</tr>';
+	}
+
+$cc='update items set price='.$i.'where item_No='.$y;
+mysqli_query($conn,$cc);

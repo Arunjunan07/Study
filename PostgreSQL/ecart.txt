@@ -1,0 +1,181 @@
+create table customer(
+cus_no varchar(5) primary key,cname varchar(30),ccode varchar(5),
+check (cus_no like 'C%'));
+
+create table cust_order(
+orderNo varchar(5) primary key,
+cdate date,
+cus_no varchar(5),
+ord_amt int default 0,
+check (orderno like 'O%'),
+foreign key(cus_no) references customer(cus_no),
+foreign key(ccode) references city(ccode)
+);
+
+create table item(
+itemno varchar(5) primary key,
+itemName varchar(30),
+unit_price int,
+check (itemno like 'I%' and length(itemno)= 5)
+);
+
+create table order_item(
+orderNo varchar(5),
+itemno varchar(5),
+foreign key(orderNo) references cust_order(orderNo),
+foreign key(itemno) references item(itemno),
+primary key(orderNo,itemno)
+);
+
+create table driver(
+dcode varchar(5) primary key,
+dname varchar(30),
+check (dcode like 'D%' and length(dcode)= 5)
+);
+
+create table city(
+ccode varchar(5) primary key,
+cname varchar(30),
+check (ccode like 'CT%' and length(ccode)= 5)
+);
+
+create table truck(
+truckcode varchar(5) primary key,
+ttype varchar(30),
+check (truckcode like 'T%' and length(truckcode)= 5),
+check (ttype in ('L','H'))
+);
+
+
+create table driver_truck(
+truckcode varchar(5),
+dcode varchar(5),
+dot date,
+ccode varchar(5),
+foreign key(truckcode) references truck(truckcode),
+foreign key(dcode) references driver(dcode),
+primary key(truckcode,dot)
+);
+
+create table shipment(
+orderNo varchar(5),
+itemno varchar(5),
+ship_date date,
+truckcode varchar(5),
+foreign key(truckcode) references truck(truckcode),
+foreign key(orderNo,itemno) references order_item(orderNo,itemno),
+primary key(orderNo,itemno)
+);
+
+alter table customer add foreign key(ccode) references city(ccode);
+
+INSERT INTO city (ccode, cname) 
+VALUES 
+    ('CT001', 'New York'),
+    ('CT002', 'Los Angeles'),
+    ('CT003', 'Chicago');
+
+INSERT INTO customer (cus_no, cname, ccode) 
+VALUES 
+    ('C0001', 'John Doe', 'CT001'),
+    ('C0002', 'Jane Smith', 'CT002'),
+    ('C0003', 'Emily Davis', 'CT003');
+
+ INSERT INTO cust_order (orderNo, cdate, cus_no, ord_amt)
+ VALUES
+     ('O0001', '2024-11-20', 'C0001', 500),
+     ('O0002', '2024-11-21', 'C0002', 1500 ),
+     ('O0003', '2024-11-22', 'C0003', 800);
+
+ INSERT INTO item (itemno, itemName, unit_price)
+ VALUES
+     ('I0001', 'Laptop', 1000),
+     ('I0002', 'Smartphone', 500),
+     ('I0003', 'Tablet', 300);
+
+ INSERT INTO order_item (orderNo, itemno)
+ VALUES
+     ('O0001', 'I0001'),
+     ('O0001', 'I0002'),
+     ('O0002', 'I0003'),
+     ('O0003', 'I0002');
+
+ INSERT INTO driver (dcode, dname)
+ VALUES
+     ('D0001', 'Robert Brown'),
+     ('D0002', 'Linda White'),
+     ('D0003', 'James Green');
+
+ INSERT INTO truck (truckcode, ttype)
+ VALUES
+     ('T0001', 'L'),
+     ('T0002', 'H'),
+     ('T0003', 'L');
+
+ INSERT INTO driver_truck (truckcode, dcode, dot, ccode)
+ VALUES
+     ('T0001', 'D0001', '2024-11-20', 'CT001'),
+     ('T0002', 'D0002', '2024-11-21', 'CT002'),
+     ('T0003', 'D0003', '2024-11-22', 'CT003');
+
+ INSERT INTO shipment (orderNo, itemno, ship_date, truckcode)
+ VALUES
+     ('O0001', 'I0001', '2024-11-20', 'T0001'),
+     ('O0002', 'I0003', '2024-11-21', 'T0002'),
+     ('O0003', 'I0002', '2024-11-22', 'T0003');
+
+INSERT INTO customer (cus_no, cname, ccode) 
+VALUES 
+    ('C0004', 'Ram', 'CT001'),
+    ('C0005', 'Sam', 'CT002');
+	
+	INSERT INTO cust_order (orderNo, cdate, cus_no, ord_amt) 
+VALUES 
+    ('O0004', '2024-11-23', 'C0004', 400),
+    ('O0005', '2024-11-24', 'C0004', 250),
+    ('O0006', '2024-11-25', 'C0004', 300),
+    ('O0007', '2024-11-26', 'C0004', 500);
+	
+	INSERT INTO driver (dcode, dname) 
+VALUES 
+    ('D0004', 'Paul'), 
+    ('D0005', 'Lee');
+
+
+SELECT cus_no,COUNT(cus_no) AS order_count
+FROM cust_order
+GROUP BY cus_no
+HAVING COUNT(cus_no) > 3;
+
+SELECT itemno, itemName, unit_price
+FROM item
+WHERE unit_price < (SELECT AVG(unit_price) FROM item);
+
+CREATE VIEW driver_info AS
+SELECT dcode,COUNT(truckcode) AS no_of_trips FROM driver_truck 
+GROUP BY dcode;
+
+
+CREATE OR REPLACE FUNCTION limit_city()
+  RETURNS TRIGGER
+  AS
+$$
+BEGIN
+	if (select count(*) from driver_truck where dot = new.dot) > 2 THEN
+		RAISE 'Driver cannot be assigned to thst particular city';
+	END IF;
+	return NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER limit_driver
+BEFORE INSERT ON driver_truck
+FOR EACH ROW
+EXECUTE FUNCTION limit_city();
+
+
+ INSERT INTO driver_truck (truckcode, dcode, dot, ccode)
+ VALUES
+     ('T0005', 'D0005', '2024-11-20', 'CT001');
